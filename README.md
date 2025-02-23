@@ -63,3 +63,4 @@ Basic Overview of this project: -
 - The Flask API loads the model each time a request is made.
 - Build a dashboard to monitor AI agent performance.
 
+Please have a look at AI_Health/Outputs.docx for key outputs for this project.
