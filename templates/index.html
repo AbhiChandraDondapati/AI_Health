@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Execution Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h2>Task Execution Time Monitoring</h2>
+    <canvas id="metricsChart"></canvas>
+
+    <script>
+        async function fetchMetrics() {
+            const response = await fetch('/metrics');
+            const data = await response.json();
+            return data;
+        }
+
+        async function updateChart(chart) {
+            const data = await fetchMetrics();
+            chart.data.labels = data.timestamps;
+            chart.data.datasets[0].data = data.durations;
+            chart.update();
+        }
+
+        async function setupChart() {
+            const ctx = document.getElementById('metricsChart').getContext('2d');
+            const chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Execution Duration (seconds)',
+                        data: [],
+                        borderColor: 'blue',
+                        backgroundColor: 'rgba(0, 0, 255, 0.2)',
+                        fill: true
+                    }]
+                }
+            });
+
+            // Update the chart every 5 seconds
+            setInterval(() => updateChart(chart), 5000);
+            updateChart(chart);
+        }
+
+        setupChart();
+    </script>
+</body>
+</html>
